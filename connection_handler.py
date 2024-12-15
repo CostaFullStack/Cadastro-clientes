@@ -9,15 +9,15 @@ import os
 load_dotenv()
 
 # Obter credenciais do banco de dados do arquivo .env
-host = os.getenv('host')
-user = os.getenv('user')
-password = os.getenv('password')
-port = os.getenv('port')
-dbname = os.getenv('dbname')
+host = os.getenv('DB_HOST')
+user = os.getenv('DB_USER')
+password = os.getenv('DB_PASSWORD')
+port = os.getenv('DB_PORT')
+dbname = os.getenv('DB_NAME')
 
-# String de conexão para MySQL com pymysql
-DATABASE_URI = f"postgres://{user}:{password}@{host}:{port}/{dbname}"
-
+# String de conexão para PostgreSQL com sqlalchemy
+DATABASE_URI = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+print(DATABASE_URI)
 @dataclass(kw_only=True)
 class ConnectionHandler:
     host: str = host
