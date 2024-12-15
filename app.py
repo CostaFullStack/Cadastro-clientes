@@ -62,7 +62,7 @@ def add_cliente():
             error = "Ocorreu um erro ao cadastrar o cliente."
             return render_template('add-cliente.html', error=error)
 
-        return redirect(url_for('clientes'))
+        return redirect(url_for('list_clientes'))  # Corrigido aqui
     
     return render_template('add-cliente.html')
 
@@ -71,14 +71,13 @@ def deletar_cliente(id: int):
     cliente = handler.session.query(Cliente).filter(Cliente.id == id).one_or_none()
     handler.session.delete(cliente)
     handler.session.commit()
-    return redirect(url_for('clientes'))
-
+    return redirect(url_for('list_clientes'))  # Corrigido aqui
 
 @app.route('/atualizar-cliente/<id>', methods=['GET', 'POST'])
 def update_cliente(id: int):
     cliente = handler.session.query(Cliente).filter(Cliente.id == id).one_or_none()
     if not cliente:
-        return redirect(url_for('clientes'))
+        return redirect(url_for('list_clientes'))  # Corrigido aqui
 
     if request.method == 'POST':
         # Dados recebidos do formulário
@@ -118,13 +117,11 @@ def update_cliente(id: int):
             error = "Ocorreu um erro ao atualizar o cliente."
             return render_template('update-cliente.html', cliente=cliente, error=error)
 
-        return redirect(url_for('clientes'))
+        return redirect(url_for('list_clientes'))  # Corrigido aqui
     
     # Formatação do template para exibir serviços já selecionados
     selected_servicos = cliente.servicos.split(", ") if cliente.servicos else []
     return render_template('update-cliente.html', cliente=cliente, selected_servicos=selected_servicos)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-
