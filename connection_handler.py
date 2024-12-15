@@ -9,22 +9,22 @@ import os
 load_dotenv()
 
 # Obter credenciais do banco de dados do arquivo .env
-DB_HOST = os.getenv('DB_HOST')
-DB_USER = os.getenv('DB_USER')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-DB_PORT = os.getenv('DB_PORT')
-DB_NAME = os.getenv('DB_NAME')
+host = os.getenv('host')
+user = os.getenv('user')
+password = os.getenv('password')
+port = os.getenv('port')
+dbname = os.getenv('dbname')
 
 # String de conexão para MySQL com pymysql
-DATABASE_URI = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URI = f"postgres://{user}:{password}@{host}:{port}/{dbname}"
 
 @dataclass(kw_only=True)
 class ConnectionHandler:
-    host: str = DB_HOST
-    user: str = DB_USER
-    password: str = DB_PASSWORD
-    database: str = DB_NAME
-    port: int = int(DB_PORT)
+    host: str = host
+    user: str = user
+    password: str = password
+    database: str = dbname
+    port: int = int(port)
     conn: Engine = None
     session: Session = None
 
