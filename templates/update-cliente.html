@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="container mt-4">
+    <h1 class="text-center text-dark">Atualizar Cliente: {{ cliente.nome }}</h1>
+    <hr />
+
+    {% if error %}  <!-- Bloco para exibir a mensagem de erro -->
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form action="{{ url_for('update_cliente', id=cliente.id) }}" method="POST" class="mt-4">
+        <div class="mb-3">
+            <label class="form-label">Nome:</label>
+            <input class="form-control" type="text" name="nome" value="{{ cliente.nome }}" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <input class="form-control" type="email" name="email" value="{{ cliente.email }}" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Telefone:</label>
+            <input class="form-control" type="tel" name="telefone" value="{{ cliente.telefone }}" required pattern="[0-9]{10,15}" placeholder="Ex: 1234567890" />
+            <small class="form-text text-muted">Digite um número de telefone (10 a 15 dígitos).</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Horário:</label>
+            <input class="form-control" type="time" name="horario" value="{{ cliente.horario }}" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Serviços:</label>
+            <ul class="list-group" id="servicos">
+                <li class="list-group-item">
+                    <input type="checkbox" name="servicos" value="Estética facial" id="servico1" {% if cliente.servicos and "Estética facial" in cliente.servicos %} checked {% endif %}>
+                    <label for="servico1">Estética facial</label>
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" name="servicos" value="Estética corporal" id="servico2" {% if cliente.servicos and "Estética corporal" in cliente.servicos %} checked {% endif %}>
+                    <label for="servico2">Estética corporal</label>
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" name="servicos" value="Sobrancelhas" id="servico3" {% if cliente.servicos and "Sobrancelhas" in cliente.servicos %} checked {% endif %}>
+                    <label for="servico3">Sobrancelhas</label>
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" name="servicos" value="Clareamento" id="servico4" {% if cliente.servicos and "Clareamento" in cliente.servicos %} checked {% endif %}>
+                    <label for="servico4">Clareamento</label>
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" name="servicos" value="Depilação a laser" id="servico5" {% if cliente.servicos and "Depilação a laser" in cliente.servicos %} checked {% endif %}>
+                    <label for="servico5">Depilação a laser</label>
+                </li>
+            </ul>
+            <small class="form-text text-muted">Selecione um ou mais serviços.</small>
+        </div>
+
+        <div class="text-center">
+            <input type="submit" class="btn btn-primary" value="Atualizar" />
+        </div>
+    </form>
+</div>
+{% endblock conteudo %}

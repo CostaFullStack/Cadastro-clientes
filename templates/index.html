@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Sistema de Clientes{% endblock title %}
+
+{% block conteudo %}
+<div class="text-center">
+    <h1 class="display-4">Bem-vindo ao Sistema de Gestão de Clientes</h1>
+    <p class="lead">Você está no controle! Utilize as ferramentas abaixo para gerenciar os clientes de forma eficiente.</p>
+    <hr class="my-4">
+    <p>Escolha uma das opções para começar:</p>
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg me-3" href="{{ url_for('add_cliente') }}" role="button">
+            <i class="fas fa-user-plus"></i> Cadastrar Novo Cliente
+        </a>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('list_clientes') }}" role="button">
+            <i class="fas fa-list"></i> Ver Lista de Clientes
+        </a>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card text-center">
+            <div class="card-header bg-dark text-light">
+                <h5>Objetivo do Sistema</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Este sistema foi desenvolvido para facilitar a gestão dos clientes, permitindo que você cadastre e consulte informações de forma prática e rápida.</p>
+                <p class="card-text">Mantenha seus registros organizados e sempre à mão!</p>
+            </div>
+            <div class="card-footer text-muted">
+                Acesse as opções acima para iniciar.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
