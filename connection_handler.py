@@ -43,7 +43,15 @@ class ConnectionHandler:
         try:
             # Criar a conexão com o banco de dados usando SQLAlchemy
             logger.info("Tentando conectar ao banco de dados...")
-            self.conn = db.create_engine(DATABASE_URI)
+
+            # Criar o engine com pool de conexões
+            self.conn = db.create_engine(
+                DATABASE_URI,
+                pool_size=10,  # número de conexões no pool
+                max_overflow=20,  # quantas conexões extras podem ser abertas
+                pool_timeout=30,  # tempo limite para obter uma conexão do pool
+                pool_recycle=3600  # tempo de reciclagem da conexão (em segundos)
+            )
 
             # Testar a conexão
             with self.conn.connect() as connection:
@@ -51,8 +59,26 @@ class ConnectionHandler:
 
             # Criar uma sessão para interagir com o banco
             self.session = Session(bind=self.conn)
+
         except OperationalError as e:
             logger.error(f"Erro ao conectar ao banco de dados: {e}")
+            raise
+
+    def commit_transaction(self):
+        """Comitar transação de forma segura."""
+        try:
+            self.session.commit()
+        except Exception as e:
+            logger.error(f"Erro ao realizar commit: {e}")
+            self.session.rollback()  # Fazer rollback em caso de erro
+            raise
+
+    def rollback_transaction(self):
+        """Reverter transação de forma segura."""
+        try:
+            self.session.rollback()
+        except Exception as e:
+            logger.error(f"Erro ao realizar rollback: {e}")
             raise
 
 # Instanciar a classe ConnectionHandler para criar a conexão
