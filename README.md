@@ -14,7 +14,16 @@ Este é um projeto desenvolvido com Flask, um framework Python para desenvolvime
 ```
 projeto/
 ├── _pycache_
+├── connection_handler.py
+├── models.py
+├── app.py
 ├── templates
+│   ├── add-cliente.html
+│   ├── base.html
+│   ├── clientes.html
+│   ├── index.html
+│   └── update-cliente.html
+├── venv
 ├── .env
 ├── .gitattributes
 ├── .gitignore
@@ -23,7 +32,8 @@ projeto/
 ├── LICENSE
 ├── models.py
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── venv
 ```
 
 ## Pré-requisitos
