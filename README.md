@@ -70,7 +70,7 @@ flask run
 5. Abra um Pull Request
 
 ## Licença
-[Especificar a licença, ex: MIT]
+MIT
 
 ## Contato
 Telefone -  (85)99763-1389
