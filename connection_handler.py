@@ -17,7 +17,7 @@ dbname = os.getenv('DB_NAME')
 
 # String de conexão para PostgreSQL com sqlalchemy
 DATABASE_URI = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
-print(DATABASE_URI)
+
 @dataclass(kw_only=True)
 class ConnectionHandler:
     host: str = host
