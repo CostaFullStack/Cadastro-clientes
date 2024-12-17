@@ -1,68 +1,154 @@
-{% extends 'base.html' %}
-
-{% block conteudo %}
+{% extends 'base.html' %} {% block conteudo %}
 <div class="container mt-4">
-    <h1 class="text-center text-dark">Cadastro de Cliente</h1>
-    <hr />
-    
-    {% if error %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
+  <h1 class="text-center text-dark">Cadastro de Cliente</h1>
+  <hr />
+
+  {% if error %}
+  <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endif %}
+
+  <form action="{{ url_for('add_cliente') }}" method="POST" class="mt-4">
+    <div class="mb-3">
+      <label class="form-label">Nome:</label>
+      <input
+        class="form-control"
+        type="text"
+        name="nome"
+        value="{{ nome }}"
+        required
+      />
     </div>
-    {% endif %}
 
-    <form action="{{ url_for('add_cliente') }}" method="POST" class="mt-4">
-        <div class="mb-3">
-            <label class="form-label">Nome:</label>
-            <input class="form-control" type="text" name="nome" value="{{ nome }}" required />
-        </div>
+    <div class="mb-3">
+      <label class="form-label">Email:</label>
+      <input
+        class="form-control"
+        type="email"
+        name="email"
+        value="{{ email }}"
+        placeholder="example@email.com"
+      />
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Email:</label>
-            <input class="form-control" type="email" name="email" value="{{ email }}" placeholder="example@email.com" />
-        </div>
+    <div class="mb-3">
+      <label class="form-label">Telefone:</label>
+      <input
+        class="form-control"
+        type="tel"
+        name="telefone"
+        value="{{ telefone }}"
+        required
+        pattern="[0-9]{10,15}"
+        placeholder="(xx) xxxx-xxxx"
+      />
+      <small class="form-text text-muted"
+        >Digite um número de telefone (10 a 15 dígitos).</small
+      >
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Telefone:</label>
-            <input class="form-control" type="tel" name="telefone" value="{{ telefone }}" required pattern="[0-9]{10,15}" placeholder="(xx) xxxx-xxxx" />
-            <small class="form-text text-muted">Digite um número de telefone (10 a 15 dígitos).</small>
-        </div>
+    <div class="mb-3">
+      <label class="form-label">Horário marcado:</label>
+      <input
+        class="form-control"
+        type="time"
+        name="horario"
+        value="{{ horario }}"
+        required
+      />
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label">Horário marcado:</label>
-            <input class="form-control" type="time" name="horario" value="{{ horario }}" required />
-        </div>
+    <div class="mb-3">
+      <label class="form-label">Serviços:</label>
+      <ul class="list-group" id="servicos">
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Botox e preenchimento"
+          id="servico4" {% if selected_servicos and 'Botox e preenchimento' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico4">Botox e preenchimento</label>
+        </li>
 
-        <div class="mb-3">
-            <label class="form-label">Serviços:</label>
-            <ul class="list-group" id="servicos">
-                <li class="list-group-item">
-                    <input type="checkbox" name="servicos" value="Estética facial" id="servico1" {% if selected_servicos and 'Estética facial' in selected_servicos %} checked {% endif %}>
-                    <label for="servico1">Estética facial</label>
-                </li>
-                <li class="list-group-item">
-                    <input type="checkbox" name="servicos" value="Estética corporal" id="servico2" {% if selected_servicos and 'Estética corporal' in selected_servicos %} checked {% endif %}>
-                    <label for="servico2">Estética corporal</label>
-                </li>
-                <li class="list-group-item">
-                    <input type="checkbox" name="servicos" value="Sobrancelhas" id="servico3" {% if selected_servicos and 'Sobrancelhas' in selected_servicos %} checked {% endif %}>
-                    <label for="servico3">Sobrancelhas</label>
-                </li>
-                <li class="list-group-item">
-                    <input type="checkbox" name="servicos" value="Clareamento" id="servico4" {% if selected_servicos and 'Clareamento' in selected_servicos %} checked {% endif %}>
-                    <label for="servico4">Clareamento</label>
-                </li>
-                <li class="list-group-item">
-                    <input type="checkbox" name="servicos" value="Depilação a laser" id="servico5" {% if selected_servicos and 'Depilação a laser' in selected_servicos %} checked {% endif %}>
-                    <label for="servico5">Depilação a laser</label>
-                </li>
-            </ul>
-            <small class="form-text text-muted">Selecione um ou mais serviços.</small>
-        </div>
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Depilacao a laser"
+          id="servico5" {% if selected_servicos and 'Depilacao a laser' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico5">Depilação a laser</label>
+        </li>
 
-        <div class="text-center">
-            <input type="submit" class="btn btn-primary" value="Cadastrar" />
-        </div>
-    </form>
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Design de sobrancelha e
+          henna" id="servico5" {% if selected_servicos and 'Design de
+          sobrancelha e henna' in selected_servicos %} checked {% endif %}>
+          <label for="servico5">Design de sobrancelha e henna</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Drenagem e massagem
+          relaxante" id="servico5" {% if selected_servicos and 'Drenagem e
+          massagem relaxante' in selected_servicos %} checked {% endif %}>
+          <label for="servico5">Drenagem e massagem relaxante</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Limpeza de pele"
+          id="servico1" {% if selected_servicos and 'Limpeza de pele' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico1">Limpeza de pele</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Lipo de papada"
+          id="servico3" {% if selected_servicos and 'Lipo de papada' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico3">Lipo de papada</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Lipo enzimatica"
+          id="servico5" {% if selected_servicos and 'Lipo enzimatica' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico5">Lipo enzimática</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Massagem para dores
+          musculares" id="servico5" {% if selected_servicos and 'Massagem para
+          dores musculares' in selected_servicos %} checked {% endif %}>
+          <label for="servico5">Massagem para dores musculares</label>
+        </li>
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Microagulhamento e jato
+          de plasma" id="servico5" {% if selected_servicos and 'Microagulhamento
+          e jato de plasma' in selected_servicos %} checked {% endif %}>
+          <label for="servico5">Microagulhamento e jato de plasma</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Micropigmentacao labial"
+          id="servico5" {% if selected_servicos and 'Micropigmentacao labial' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico5">Micropigmentação labial</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Peeling químico"
+          id="servico2" {% if selected_servicos and 'Peeling químico' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico2">Peeling químico</label>
+        </li>
+
+        <li class="list-group-item">
+          <input type="checkbox" name="servicos" value="Sobrancelha fio a fio"
+          id="servico5" {% if selected_servicos and 'Sobrancelha fio a fio' in
+          selected_servicos %} checked {% endif %}>
+          <label for="servico5">Sobrancelha fio a fio</label>
+        </li>
+      </ul>
+      <small class="form-text text-muted">Selecione um ou mais serviços.</small>
+    </div>
+
+    <div class="text-center">
+      <input type="submit" class="btn btn-primary" value="Cadastrar" />
+    </div>
+  </form>
 </div>
 {% endblock conteudo %}
