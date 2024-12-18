@@ -14,19 +14,19 @@ logger = logging.getLogger(__name__)
 # Carregar variáveis do arquivo .env
 load_dotenv()
 
-# Obter credenciais do banco de dados do arquivo .env
-host = os.getenv('DB_HOST', 'aws-0-sa-east-1.pooler.supabase.com')
-user = os.getenv('DB_USER', 'postgres.olhvmubncytcqaottytr')  # Transaction Pooler user
-password = os.getenv('DB_PASSWORD', 'default_password')
-port = os.getenv('DB_PORT', '6543')
-dbname = os.getenv('DB_NAME', 'postgres')
+# Obter credenciais do banco de dados do arquivo .env (agora com os valores do Railway)
+host = os.getenv('DB_HOST', 'postgres.railway.internal')
+user = os.getenv('DB_USER', 'postgres')  
+password = os.getenv('DB_PASSWORD', 'LWsicuUpvxGBYxNrXGsKtNqbjdGciJmE')
+port = os.getenv('DB_PORT', '5432')
+dbname = os.getenv('DB_NAME', 'railway')
 
 # Validar se as variáveis obrigatórias estão presentes
 required_envs = [host, user, password, port, dbname]
 if not all(required_envs):
     raise ValueError("Algumas variáveis de ambiente estão faltando no arquivo .env!")
 
-# Construir a string de conexão para o Transaction Pooler
+# Construir a string de conexão para o Railway
 DATABASE_URI = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
 
 @dataclass(kw_only=True)
@@ -35,7 +35,7 @@ class ConnectionHandler:
     user: str = user
     password: str = password
     database: str = dbname
-    port: int = int(port) if port.isdigit() else 6543
+    port: int = int(port) if port.isdigit() else 5432
     conn: Engine = None
     session: Session = None
 
