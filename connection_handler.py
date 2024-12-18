@@ -7,26 +7,22 @@ from dotenv import load_dotenv
 import os
 import logging
 
-# Configurar logging
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Carregar variáveis do arquivo .env
 load_dotenv()
 
-# Obter credenciais do banco de dados do arquivo .env (agora com os valores do Railway)
 host = os.getenv('DB_HOST', 'postgres.railway.internal')
 user = os.getenv('DB_USER', 'postgres')  
 password = os.getenv('DB_PASSWORD', 'LWsicuUpvxGBYxNrXGsKtNqbjdGciJmE')
 port = os.getenv('DB_PORT', '5432')
 dbname = os.getenv('DB_NAME', 'railway')
 
-# Validar se as variáveis obrigatórias estão presentes
 required_envs = [host, user, password, port, dbname]
 if not all(required_envs):
     raise ValueError("Algumas variáveis de ambiente estão faltando no arquivo .env!")
 
-# Construir a string de conexão para o Railway
 DATABASE_URI = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
 
 @dataclass(kw_only=True)
@@ -41,7 +37,6 @@ class ConnectionHandler:
 
     def __post_init__(self):
         try:
-            # Criar a conexão com o banco de dados usando SQLAlchemy
             logger.info("Tentando conectar ao banco de dados...")
 
             # Criar o engine com pool de conexões
@@ -53,11 +48,9 @@ class ConnectionHandler:
                 pool_recycle=3600  # tempo de reciclagem da conexão (em segundos)
             )
 
-            # Testar a conexão
             with self.conn.connect() as connection:
                 logger.info("Conexão bem-sucedida!")
 
-            # Criar uma sessão para interagir com o banco
             self.session = Session(bind=self.conn)
 
         except OperationalError as e:
@@ -70,7 +63,7 @@ class ConnectionHandler:
             self.session.commit()
         except Exception as e:
             logger.error(f"Erro ao realizar commit: {e}")
-            self.session.rollback()  # Fazer rollback em caso de erro
+            self.session.rollback() 
             raise
 
     def rollback_transaction(self):
@@ -81,7 +74,6 @@ class ConnectionHandler:
             logger.error(f"Erro ao realizar rollback: {e}")
             raise
 
-# Instanciar a classe ConnectionHandler para criar a conexão
 try:
     handler = ConnectionHandler()
 except ValueError as e:
