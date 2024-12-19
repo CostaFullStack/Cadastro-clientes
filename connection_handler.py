@@ -7,26 +7,18 @@ from dotenv import load_dotenv
 import os
 import logging
 
-# Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Carregar variáveis do arquivo .env
 load_dotenv()
 
-# Obter credenciais do banco de dados do arquivo .env (agora com os valores do Railway)
-host = os.getenv('DB_HOST', 'postgres.railway.internal')
-user = os.getenv('DB_USER', 'postgres')  
-password = os.getenv('DB_PASSWORD', 'LWsicuUpvxGBYxNrXGsKtNqbjdGciJmE')
-port = os.getenv('DB_PORT', '5432')
-dbname = os.getenv('DB_NAME', 'railway')
+# Por padrão, usar a URL pública para desenvolvimento local
+DATABASE_URI = "mysql://root:kFUyaGqweaKQgjjmnkbHtbQEFSLCjAYK@junction.proxy.rlwy.net:48430/railway"
 
-# Validar se as variáveis obrigatórias estão presentes
-required_envs = [host, user, password, port, dbname]
-if not all(required_envs):
-    raise ValueError("Algumas variáveis de ambiente estão faltando no arquivo .env!")
-
-# Construir a string de conexão para o Railway
-DATABASE_URI = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+# Se estiver em produção no Railway, usar a URL privada
+if os.getenv('PRODUCTION') == 'true':
+    DATABASE_URI = "mysql://root:kFUyaGqweaKQgjjmnkbHtbQEFSLCjAYK@mysql-q8fq.railway.internal:3306/railway"
 
 @dataclass
 class ConnectionHandler:
@@ -45,6 +37,7 @@ class ConnectionHandler:
                 pool_recycle=3600
             )
 
+            # Testar a conexão
             with self.conn.connect() as connection:
                 logger.info("Conexão bem-sucedida!")
 
@@ -59,7 +52,7 @@ class ConnectionHandler:
             self.session.commit()
         except Exception as e:
             logger.error(f"Erro ao realizar commit: {e}")
-            self.session.rollback()  # Fazer rollback em caso de erro
+            self.session.rollback()
             raise
 
     def rollback_transaction(self):
@@ -69,7 +62,7 @@ class ConnectionHandler:
             logger.error(f"Erro ao realizar rollback: {e}")
             raise
 
-# Instanciar a classe ConnectionHandler para criar a conexão
+# Testar a conexão com o banco de dados
 try:
     handler = ConnectionHandler()
 except Exception as e:
